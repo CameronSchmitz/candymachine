@@ -21,17 +21,12 @@ public class claw {
         		
         		if (key =='a') { //move left
         		x-=20;
-        		
-        		StdDraw.picture(x, y, "angry-bird.png");
-        		StdDraw.show(0);
-        		StdDraw.clear();
+        		draw(x,y);
         		}
         		
         		if (key =='d') { // move right
             		x+=20;
-            		StdDraw.picture(x, y, "angry-bird.png");
-            		StdDraw.show(0);
-            		StdDraw.clear();
+            		draw(x,y);
             		}
         		if (key =='s') {
             		drop(x,y);
@@ -44,9 +39,7 @@ public class claw {
 		
 		while (y>0) {
 			y-=5;
-			StdDraw.picture(x, y, "angry-bird.png");
-			StdDraw.show(20);
-			StdDraw.clear();
+			draw(x,y);
 		}
 		returnObject(x,y);
 	}
@@ -55,9 +48,12 @@ public class claw {
 		
 		while (y<height) {
 			y+=5;
-			StdDraw.picture(x, y, "angry-bird.png");
-			StdDraw.show(20);
-			StdDraw.clear();
+			draw(x,y);
 		}
+	}
+	public static void draw(int x, int y) {
+		StdDraw.picture(x, y, "angry-bird.png");
+		StdDraw.show(20);
+		StdDraw.clear();
 	}
 }
