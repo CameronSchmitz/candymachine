@@ -2,17 +2,22 @@ import java.util.Scanner;
 public class claw {
 	public static int height = 400;
 	public static int width = 600;
+	public static int xSize= 50;
+	public static int ySize= 50;
+	public static String background = "back.png";
 	
 	public static void main(String[] args) {
+		 int x= 200;
+	     int y= 300;
 		StdDraw.setCanvasSize(width, height);
         StdDraw.setXscale(0, width);
         StdDraw.setYscale(0, height);
-        control();   
+        draw(x,y);
+        control(x,y);   
 	}
                  
-	public static void control() {
-        int x= 200;
-        int y= 300;
+	public static void control(int x, int y) {
+       
         //StdDraw.picture(x, y, "angry-bird.png");
         while (true) {
         	
@@ -37,7 +42,7 @@ public class claw {
 	
 	public static void drop(int x, int y) {
 		
-		while (y>0) {
+		while (y>height/2) {
 			y-=5;
 			draw(x,y);
 		}
@@ -50,9 +55,14 @@ public class claw {
 			y+=5;
 			draw(x,y);
 		}
+		while (x<width) {
+			x+=5;
+			draw(x,y);
+		}
 	}
 	public static void draw(int x, int y) {
-		StdDraw.picture(x, y, "angry-bird.png");
+		StdDraw.picture(width/2, height/2, background, 600, 400);
+		StdDraw.picture(x, y, "angry-bird.png", xSize, ySize);
 		StdDraw.show(20);
 		StdDraw.clear();
 	}
