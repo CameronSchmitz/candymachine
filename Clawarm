@@ -1,0 +1,40 @@
+
+import java.util.Scanner;
+public class Claw {
+	public static int height = 400;
+	public static int width = 600;
+	public static void main(String[] args) {
+		
+		StdDraw.setCanvasSize(width, height);
+        StdDraw.setXscale(0, width);
+        StdDraw.setYscale(0, height);
+        //StdDraw.picture(200, 0, "benzin.png");
+        int x= 200;
+        int y= 300;
+        
+        while (true) {
+        
+        	if (StdDraw.hasNextKeyTyped()) {
+        		char key = StdDraw.nextKeyTyped();
+        		
+        		if (key =='a') { //move left
+        		x-=20;
+        		StdDraw.picture(x, y, "angry-bird.png");
+        		StdDraw.show(0);
+        		StdDraw.clear();
+        		}
+        		
+        		
+        		if (key =='d') { // move right
+            		x+=20;
+            		StdDraw.picture(x, y, "angry-bird.png");
+            		StdDraw.show(0);
+            		StdDraw.clear();
+            		}
+        		
+        	}
+
+        
+        }
+	}
+}
