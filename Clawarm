@@ -5,6 +5,9 @@ public class claw {
 	public static int xSize= 50;
 	public static int ySize= 50;
 	public static String background = "back.png";
+	public static int[] xcoord;          // x position (m)
+    public static int[] ycoord; 
+    public static String[] image;
 	
 	public static void main(String[] args) {
 		 int x= 200;
@@ -12,8 +15,10 @@ public class claw {
 		StdDraw.setCanvasSize(width, height);
         StdDraw.setXscale(0, width);
         StdDraw.setYscale(0, height);
+       
         draw(x,y);
-        control(x,y);   
+        control(x,y); 
+        
 	}
                  
 	public static void control(int x, int y) {
@@ -42,7 +47,7 @@ public class claw {
 	
 	public static void drop(int x, int y) {
 		
-		while (y>height/2) {
+		while ( y>0 && y != ycoord[0]+50 ) {
 			y-=5;
 			draw(x,y);
 		}
@@ -60,9 +65,30 @@ public class claw {
 			draw(x,y);
 		}
 	}
+	
+	public static void pit () {
+		int N = 2;  
+	    xcoord = new int[N];
+	    ycoord = new int[N];
+	    image = new String[N];
+	      
+	     xcoord[0] = 100;
+	     xcoord[1] = 300;
+	     ycoord[0] = 0;
+	     ycoord[1] = 0;
+	     image[0] = "angry-bird.png";
+	     image[1] = "back.png";
+	      
+		for (int i=0; i < 2; i++) {
+			StdDraw.picture(xcoord[i], ycoord[i], image[i],50, 50);
+			
+		}
+	}
+	
 	public static void draw(int x, int y) {
-		StdDraw.picture(width/2, height/2, background, 600, 400);
+		//StdDraw.picture(width/2, height/2, background, 600, 400);
 		StdDraw.picture(x, y, "angry-bird.png", xSize, ySize);
+		pit();
 		StdDraw.show(20);
 		StdDraw.clear();
 	}
