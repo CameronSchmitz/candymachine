@@ -35,7 +35,7 @@ public class Claw {
         StdDraw.setYscale(0, height);
         //StdAudio.loop("lastseconds.wav");
         
-        Coin.coinDrag();
+        
         pit();
         draw(x, y, "claw1.png");
         control(x, y);
