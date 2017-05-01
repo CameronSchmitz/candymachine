@@ -1,95 +1,183 @@
 import java.util.Scanner;
-public class claw {
-	public static int height = 400;
-	public static int width = 600;
-	public static int xSize= 50;
-	public static int ySize= 50;
-	public static String background = "back.png";
-	public static int[] xcoord;          // x position (m)
-    public static int[] ycoord; 
+import java.util.*;
+
+//TODO
+// make array deletions
+//fix error that arises when pic isnt there
+//add return to original position method
+//make claw control match claw return position
+//grabs two candies?
+//also animation for claw closing
+
+public class Claw {
+    public static int height = 400;
+    public static int width = 600;
+    public static int xSize = 50;
+    public static int ySize = 50;
+    public static String background = "machine.png";
+    
+    public static int[] xcoord; // x position (m)
+    public static int[] ycoord;
     public static String[] image;
-	
-	public static void main(String[] args) {
-		 int x= 200;
-	     int y= 300;
-		StdDraw.setCanvasSize(width, height);
+    
+    public static int N = 10;
+    public static int num = 0;
+
+    public static void main(String[] args) {
+        
+    	play();
+    }
+
+    public static void play() {
+        int x = 200;
+        int y = 350;
+        StdDraw.setCanvasSize(width, height);
         StdDraw.setXscale(0, width);
         StdDraw.setYscale(0, height);
-       
-        draw(x,y);
-        control(x,y); 
-        
-	}
-                 
-	public static void control(int x, int y) {
-       
-        //StdDraw.picture(x, y, "angry-bird.png");
+        // StdAudio.loop("lastseconds.wav");
+        pit();
+
+        draw(x, y, "claw1.png");
+        control(x, y);
+    }
+
+    public static void control(int x, int y) {
+
         while (true) {
+
+        	if ( StdDraw.isKeyPressed(37) && x!=50) { //move left
+            	x -= 5;
+                draw(x, y, "claw1.png");
+            }
         	
-        	if (StdDraw.hasNextKeyTyped()) {
-        		char key = StdDraw.nextKeyTyped();
-        		
-        		if (key =='a') { //move left
-        		x-=20;
-        		draw(x,y);
-        		}
-        		
-        		if (key =='d') { // move right
-            		x+=20;
-            		draw(x,y);
-            		}
-        		if (key =='s') {
-            		drop(x,y);
-            	}
-        	}
+        	else if ( StdDraw.isKeyPressed(39) && x != 550) { //move left
+            	x += 5;
+                draw(x, y, "claw1.png");
+            }
+        	
+        	else if ( StdDraw.isKeyPressed(32)) { //move left
+            	drop(x, y);
+            }
         }
-	}
-	
-	public static void drop(int x, int y) {
-		
-		while ( y>0 && y != ycoord[0]+50 ) {
-			y-=5;
-			draw(x,y);
-		}
-		returnObject(x,y);
-	}
-	
-	public static void returnObject (int x, int y) {
-		
-		while (y<height) {
-			y+=5;
-			draw(x,y);
-		}
-		while (x<width) {
-			x+=5;
-			draw(x,y);
-		}
-	}
-	
-	public static void pit () {
-		int N = 2;  
-	    xcoord = new int[N];
-	    ycoord = new int[N];
-	    image = new String[N];
-	      
-	     xcoord[0] = 100;
-	     xcoord[1] = 300;
-	     ycoord[0] = 0;
-	     ycoord[1] = 0;
-	     image[0] = "angry-bird.png";
-	     image[1] = "back.png";
-	      
-		for (int i=0; i < 2; i++) {
-			StdDraw.picture(xcoord[i], ycoord[i], image[i],50, 50);
-			
-		}
-	}
-	
-	public static void draw(int x, int y) {
-		//StdDraw.picture(width/2, height/2, background, 600, 400);
-		StdDraw.picture(x, y, "angry-bird.png", xSize, ySize);
-		pit();
-		StdDraw.show(20);
-		StdDraw.clear();
-	}
+     
+    }
+
+    public static void drop(int x, int y) {
+
+        while ((y > 200 && y != ycoord[0] + 50) || !checkCandy(x,y) ) {
+            y -= 5;
+            draw(x, y, "claw1.png");
+        }
+        returnObject(x, y);
+    }
+
+    public static void returnObject(int x, int y) {
+        if (checkCandy(x, y)) {
+            while (y < height - 70) {
+                y += 3;
+                drawItem(x, y, num);
+            }
+            while (x > 70) {
+                x -= 5;
+                drawItem(x, y, num);
+            }
+            dropItem(x, y, image[0]);
+            
+        } else {
+            while (y < height - 70) {
+                y += 3;
+                draw(x, y, "claw1.png");
+            }
+            while (x > 70) {
+                x -= 5;
+                draw(x, y, "claw1.png");
+            }
+        }
+    }
+
+    public static void pit() {
+        xcoord = new int[N];
+        ycoord = new int[N];
+        image = new String[N];
+
+        //assign images
+        image[0] = "candy1.png";
+        image[1] = "candy2.png";
+        image[2] = "candy3.png";
+        image[3] = "candy4.png";
+        image[4] = "candy5.png";
+        image[5] = "candy1.png";
+        image[6] = "candy2.png";
+        image[7] = "candy3.png";
+        image[8] = "candy4.png";
+        image[9] = "candy5.png";
+
+        //upper limit of the number generator that bounds it to right at 530
+        //lower limit that bounds it on the left
+        int x_upper = width - 70;
+        int x_lower = width / 3;
+
+        int y_upper = 210;
+        int y_lower = 170;
+
+        //loop that generate random x values within the bounds
+        for (int i = 0; i < N; i++) {
+            xcoord[i] = (int)(Math.random() * (x_upper - (x_lower))) + (x_lower);
+        }
+
+        //loop that generate random y values within bounds
+        for (int i = 0; i < N; i++) {
+            ycoord[i] = (int)(Math.random() * (y_upper - (y_lower))) + (y_lower);
+        }
+    }
+
+    public static boolean checkCandy(int x, int y) {
+        int i = 0;
+        while (i <= xcoord.length) {
+            if (xcoord[i] - 50 < x && x < xcoord[i] + 50) {
+                num = i;
+                xcoord[i]= 700;
+                return true;  
+            }
+            i++;
+        }
+        return false;
+    }
+
+    public static void draw(int x, int y, String pic) {
+        StdDraw.picture(width / 2, height / 2, background, 600, 400);
+        StdDraw.picture(x, y, pic, xSize, ySize);
+        for (int i = 0; i < N; i++) {
+            StdDraw.picture(xcoord[i], ycoord[i], image[i], 50, 50);
+        }
+        StdDraw.show(20);
+        StdDraw.clear();
+    }
+
+    public static void drawItem(int x, int y, int num) {
+        StdDraw.picture(width / 2, height / 2, background, 600, 400);
+        StdDraw.picture(x, y, "claw1.png", xSize, ySize);
+        StdDraw.picture(x, y, image[num], xSize, ySize);
+        for (int i = 0; i < N; i++) {
+            StdDraw.picture(xcoord[i], ycoord[i], image[i], 50, 50);
+        }
+        StdDraw.show(20);
+        StdDraw.clear();
+    }
+
+    public static void dropItem(int x, int y, String pic) {
+     
+        while (y > 50) {
+            y -= 2;
+            StdDraw.picture(width / 2, height / 2, background, 600, 400);
+            StdDraw.picture(70, 332, "claw1.png", xSize, ySize);
+            StdDraw.picture(x, y, image[num], 50, 50);
+            for (int i = 0; i < N; i++) {
+                StdDraw.picture(xcoord[i], ycoord[i], image[i], 50, 50);
+            }
+            StdDraw.show(0);
+            StdDraw.clear();
+        }
+    }
+
 }
