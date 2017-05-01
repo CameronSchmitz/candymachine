@@ -3,7 +3,6 @@ import java.util.*;
 
 //TODO
 // make array deletions
-//fix error that arises when pic isnt there
 //add return to original position method
 //make claw control match claw return position
 //grabs two candies?
@@ -24,7 +23,6 @@ public class Claw {
     public static int num = 0;
 
     public static void main(String[] args) {
-        
     	play();
     }
 
@@ -59,12 +57,11 @@ public class Claw {
             	drop(x, y);
             }
         }
-     
     }
 
     public static void drop(int x, int y) {
 
-        while ((y > 200 && y != ycoord[0] + 50) || !checkCandy(x,y) ) {
+        while ((y > 200 && y != ycoord[0] + 50)  ) {
             y -= 5;
             draw(x, y, "claw1.png");
         }
@@ -73,6 +70,7 @@ public class Claw {
 
     public static void returnObject(int x, int y) {
         if (checkCandy(x, y)) {
+        	
             while (y < height - 70) {
                 y += 3;
                 drawItem(x, y, num);
@@ -82,8 +80,10 @@ public class Claw {
                 drawItem(x, y, num);
             }
             dropItem(x, y, image[0]);
-            
-        } else {
+            } 
+        
+        if (!checkCandy(x,y)) {
+        	
             while (y < height - 70) {
                 y += 3;
                 draw(x, y, "claw1.png");
@@ -92,6 +92,7 @@ public class Claw {
                 x -= 5;
                 draw(x, y, "claw1.png");
             }
+            
         }
     }
 
@@ -133,8 +134,9 @@ public class Claw {
 
     public static boolean checkCandy(int x, int y) {
         int i = 0;
-        while (i <= xcoord.length) {
-            if (xcoord[i] - 50 < x && x < xcoord[i] + 50) {
+        num = 0;
+        while (i < xcoord.length && num == 0) {
+            if (xcoord[i] - 40 < x && x < xcoord[i] + 40) {
                 num = i;
                 xcoord[i]= 700;
                 return true;  
