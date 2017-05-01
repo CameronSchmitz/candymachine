@@ -1,93 +1,123 @@
-//*******************************************************************
-//
-//   File: NBody.java
-//
-//   Author: Jason Huishen Lu and Cameron Schmitz      Email: huishen.lu@yale.edu
-//
-//   Class: CS 112
-//
-//   Time spent on this problem: 9 hours
-//   --------------------
-//
-//      This program simulates a our solar system using the leap frog method
-//
-//*******************************************************************
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
-
 public class claw {
-
-    public static final String PLANETS_FILE = "planets.txt";
-
-    public static final int WIDTH = 540;
-
-    public static final int HEIGHT = 560;
-
-    // animation pause (in miliseconds)
-    public static final int DELAY = 20;
-
-    // music (2001 theme)
-    public static final String MUSIC = "clawmusic.wav";
-
-    // background image
-    public static final String BACKGROUND = "back.png";
-
-
-    // TODO: read the planet file, new the parallel arrays, and load
-
-
-    // their values from the file.
-    public static void loadPlanets(String planetFileName) {
-
-    }
-
-    public static void runSimulation() {
-
-        // run numerical simulation from 0 to T
-        for (double t = 0.0; t < 100000; t++) {
-
-            // draw background and then planets
-
-            StdDraw.picture(WIDTH/2, HEIGHT/2, BACKGROUND);
-
-            // pause for a short while, using "animation mode"
-            StdDraw.show(DELAY);
-        }
-    }
-
+    public static int height = 400;
+    public static int width = 600;
+    public static int xSize= 50;
+    public static int ySize= 50;
+    public static String background = "machine.png";
+    public static int[] xcoord;          // x position (m)
+    public static int[] ycoord;
+    public static String[] image;
+    public static int N = 10;
 
     public static void main(String[] args) {
-        // TODO: read T and dt from command line.
-        Scanner console = new Scanner(System.in);
+        play();
+    }
 
-        // load planets from file specified in the command line
+    public static void play(){
+        int x= 200;
+        int y= 350;
+        StdDraw.setCanvasSize(width, height);
+        StdDraw.setXscale(0, width);
+        StdDraw.setYscale(0, height);
+        StdAudio.loop("lastseconds.wav");
+        pit ();
 
 
-        // rescale coordinates that we can use natural x- and y-coordinates
-        StdDraw.setCanvasSize(WIDTH, HEIGHT);
+        draw(x,y);
+        control(x,y);
+    }
 
-        // Change scale from the default of [0 - 1.0].
-        StdDraw.setXscale(0, WIDTH);
-        StdDraw.setYscale(0, HEIGHT);
 
-        StdAudio.play( MUSIC );
+    public static void control(int x, int y) {
 
-        // turn on animation mode
-        StdDraw.show(0);
+        //StdDraw.picture(x, y, "angry-bird.png");
+        while (true) {
 
-        // Run simulation
-        runSimulation();
+            if (StdDraw.hasNextKeyTyped()) {
+                char key = StdDraw.nextKeyTyped();
 
-    }//end main
+                if (key =='a') { //move left
+                    x-=20;
+                    draw(x,y);
+                }
 
-    //printArray used for debugging
-    public static void printArray(Double[] anArray) {
-        for (int i = 0; i < anArray.length; i++) {
-            if (i > 0) {
-                System.out.print(", ");
+                if (key =='d') { // move right
+                    x+=20;
+                    draw(x,y);
+                }
+                if (key =='s') {
+                    drop(x,y);
+                }
             }
-            System.out.print(anArray[i]);
         }
-    }//end printArray
-}//end program
+    }
+
+    public static void drop(int x, int y) {
+
+        while ( y>200 && y != ycoord[0]+50 ) {
+            y-=3;
+            draw(x,y);
+        }
+        returnObject(x,y);
+    }
+
+    public static void returnObject (int x, int y) {
+
+        while (y<height-70) {
+            y+=3;
+            draw(x,y);
+        }
+        while (x>70) {
+            x-=5;
+            draw(x,y);
+        }
+    }
+
+    public static void pit () {
+        xcoord = new int[N];
+        ycoord = new int[N];
+        image = new String[N];
+
+        //assign images
+        image[0] = "candy1.png";
+        image[1] = "candy2.png";
+        image[2] = "candy3.png";
+        image[3] = "candy4.png";
+        image[4] = "candy5.png";
+        image[5] = "candy1.png";
+        image[6] = "candy2.png";
+        image[7] = "candy3.png";
+        image[8] = "candy4.png";
+        image[9] = "candy5.png";
+
+        //upper limit of the number generator that bounds it to right at 530
+        //lower limit that bounds it on the left
+        int x_upper = width - 70;
+        int x_lower = width / 3;
+
+        int y_upper = 210;
+        int y_lower = 170;
+
+        //loop that generate random x values within the bounds
+        for (int i=0; i < N; i++) {
+            xcoord[i] = (int) (Math.random() * (x_upper - (x_lower))) + (x_lower);
+        }
+
+        //loop that generate random y values within bounds
+        for (int i=0; i < N; i++) {
+            ycoord[i] = (int) (Math.random() * (y_upper - (y_lower))) + (y_lower);
+        }
+    }
+
+    public static void draw(int x, int y) {
+        StdDraw.picture(width/2, height/2, background, 600, 400);
+        StdDraw.picture(x, y, "claw1.png", xSize, ySize);
+        for (int i=0; i < N; i++) {
+            StdDraw.picture(xcoord[i], ycoord[i], image[i],50, 50);
+
+        }
+        StdDraw.show(20);
+        StdDraw.clear();
+    }
+}
