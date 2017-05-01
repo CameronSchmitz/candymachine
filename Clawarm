@@ -23,6 +23,7 @@ public class Claw {
     public static int num = 0;
 
     public static void main(String[] args) {
+    	//
     	play();
     }
 
@@ -32,9 +33,10 @@ public class Claw {
         StdDraw.setCanvasSize(width, height);
         StdDraw.setXscale(0, width);
         StdDraw.setYscale(0, height);
-        // StdAudio.loop("lastseconds.wav");
+        //StdAudio.loop("lastseconds.wav");
+        
+        Coin.coinDrag();
         pit();
-
         draw(x, y, "claw1.png");
         control(x, y);
     }
@@ -94,6 +96,7 @@ public class Claw {
             }
             
         }
+       
     }
 
     public static void pit() {
@@ -146,7 +149,7 @@ public class Claw {
         return false;
     }
 
-    public static void draw(int x, int y, String pic) {
+    public static void draw(double x, double y, String pic) {
         StdDraw.picture(width / 2, height / 2, background, 600, 400);
         StdDraw.picture(x, y, pic, xSize, ySize);
         for (int i = 0; i < N; i++) {
@@ -156,10 +159,10 @@ public class Claw {
         StdDraw.clear();
     }
 
-    public static void drawItem(int x, int y, int num) {
+    public static void drawItem(double x, double y, int num) {
         StdDraw.picture(width / 2, height / 2, background, 600, 400);
         StdDraw.picture(x, y, "claw1.png", xSize, ySize);
-        StdDraw.picture(x, y, image[num], xSize, ySize);
+        StdDraw.picture(x, y-35, image[num], xSize, ySize);
         for (int i = 0; i < N; i++) {
             StdDraw.picture(xcoord[i], ycoord[i], image[i], 50, 50);
         }
